@@ -1,5 +1,7 @@
 package com.jojoldu.book.springboot.web;
 
+import com.jojoldu.book.springboot.config.auth.LoginUser;
+import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
 import com.jojoldu.book.springboot.service.posts.PostsService;
 import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
 import com.jojoldu.book.springboot.web.dto.PostsUpdateRequestDto;
@@ -10,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.servlet.http.HttpSession;
 
 
 /*
@@ -23,10 +27,17 @@ src/main/resources/templates/*.mustache
 public class IndexController {
 
     private final PostsService postsService;
+    private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts", postsService.findAllDesc());
+//        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        // @LoginUser를 사용하여 세션 정보를 가져왔음
+
+        if(user != null) {
+            model.addAttribute("userName", user.getName());
+        }
         return "index";
     }
     // index가 자동으로 index.mustache로 전환되어 처리됨
