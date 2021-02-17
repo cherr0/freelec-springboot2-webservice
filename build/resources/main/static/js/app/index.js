@@ -53,8 +53,8 @@ let main = {
             alert('글이 수정되었습니다.');
             window.location.href = '/';
         }).fail(function(error) {
-            alery(JSON.stringify(error));
-        });
+            alert(JSON.stringify(error));
+        })
     },
 
     delete : function() {
